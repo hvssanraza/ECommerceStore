@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -27,6 +28,12 @@ int main()
     double couponValue;
     int region;
     double salesTax, taxRate, taxRate1, total_after_tax;
+    int return0, returnA, returnB, returnC;
+    double total_after_return;
+    char redeemPoints;
+    double pointsDiscount, pointsDiscount2, final_points_Discount;
+    char giftWrap;
+    double giftWrap1, giftWrap2, giftWrap3, giftWrap4;
 
     cout<<" "<<endl;
     cout<<"---Welcome to the ECommerce Store---"<<endl;
@@ -73,7 +80,7 @@ int main()
 
     cout<<"You have Earned "<< loyalty_points<<" Loyalty Points."<<endl;
 
-       cout<<""<<endl;
+    cout<<""<<endl;
     cout<<"Enter type of Customer:"<<endl;
     cout<<"1: Regular"<<endl;
     cout<<"2: VIP (Additional 5% OFF)"<<endl;
@@ -144,7 +151,109 @@ int main()
 
     cout<<"Your Total Bill is: $"<< total_after_tax<<endl;
 
+    cout<<""<<endl;
+    cout<<"Would you like to return any of your products?" <<endl;
+    cout<<"1: Enter 0 to Skip"<<endl;
+    cout<<"2: Enter 1 to Proceed"<<endl;
+    cin>>return0;
+    if (return0 == 0)
+    {
+        cout << "You have skipped this" << endl;
+    }
+
+    if (return0 == 1)
+    {
+        cout<<"Product A: "<<endl;
+        cin>>returnA;
+        if (returnA > quantityA)
+        {
+            cout << "Sorry, only " << quantityA << " units of Product A are in your cart." << endl;
+            return 0;
+        }
+        cout<<"Product B: "<<endl;
+        cin>>returnB;
+        if (returnB > quantityB)
+        {
+            cout << "Sorry, only " << quantityB << " units of Product B are in your cart." << endl;
+            return 0;
+        }
+        cout<<"Product C: "<<endl;
+        cin>>returnC;
+        if (returnC > quantityC)
+        {
+            cout << "Sorry, only " << returnC << " units of Product C are in your cart." << endl;
+            return 0;
+        }
+    }
+
+    quantityA -= returnA;
+    quantityB -= returnB;
+    quantityC -= returnC;
+    total_after_return = (priceA * quantityA) + (priceB * quantityB) + (priceC * quantityC);
+
+    if (return0 == 1)
+    {
+        cout<<"Your Total after return is: $"<<total_after_return<<endl;
+    }
+
+    cout<<""<<endl;
+    cout << "You have " << loyalty_points << " loyalty points"<<endl;
+    cout<<"1 Loyalty point = $1"<<endl;
+    cout<<"Do you want to redeem your Loyalty Points for discount? (Y / N):"<<endl;
+    cin>>redeemPoints;
+
+    if (redeemPoints == 'y' || redeemPoints == 'Y')
+    {
+        pointsDiscount = total_after_return - loyalty_points;
+        pointsDiscount2 = total_after_tax - loyalty_points;
+        final_points_Discount = ( return0 > 0 ) ?   pointsDiscount : pointsDiscount2;
+        (return0> 0) ? cout<<"Your new amount after loyalty discount is: $"<<pointsDiscount<<endl : cout<<"Your new amount after loyalty discount is: $"<<pointsDiscount2<<endl;
+
+
+    }
+
+    if(redeemPoints == 'n' || redeemPoints == 'N')
+    {
+        (return0> 0) ? cout<<"Your Total is: $"<<total_after_return<<endl : cout<<"Your Total is: $"<<total_after_tax<<endl;
+    }
+
+    cout<<""<<endl;
+    cout<<"Would you like to add Gift Wrapping for $5? (Y/N)"<<endl;
+    cin>>giftWrap;
+
+    if (giftWrap == 'y' || giftWrap == 'Y')
+    {
+        giftWrap1= total_after_return + 5;
+        giftWrap2 = total_after_tax + 5;
+        giftWrap3 = pointsDiscount + 5;
+        giftWrap4 = pointsDiscount2 + 5;
+        (return0 > 0) ? cout<<"Your new amount after adding Gift Wrap is: $"<< giftWrap3<<endl : cout<<"Your new amount after adding Gift Wrap is: $"<<giftWrap4<<endl;
+
+    }
+
+    if (return0 == 0)
+    {
+        (return0 == 0) ? cout<<"Your new amount after adding Gift Wrap is: $"<< total_after_return<<endl : cout<<"Your new amount after adding Gift Wrap is: $"<<total_after_tax<<endl;
+    }
+
+    if (giftWrap == 'N' || giftWrap == 'n')
+    {
+        (return0> 0) ? cout<<"Your Total is: $"<<pointsDiscount<<endl : cout<<"Your Total is: $"<<pointsDiscount2<<endl;
+    }
+
+    if(return0 == 0)
+    {
+        (return0> 0) ? cout<<"Your Total is: $"<<total_after_return<<endl : cout<<"Your Total is: $"<<total_after_tax<<endl;
+    }
+
+
+    time_t t = time(0);
+    tm* now = localtime(&t);
+    cout << "Order placed on: " << (now->tm_mon + 1) << '/'
+         << now->tm_mday << '/' << (now->tm_year + 1900) << " at "
+         << now->tm_hour << ':' << now->tm_min << endl;
 
     return 0;
 
 }
+ 
